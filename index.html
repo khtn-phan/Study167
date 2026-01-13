@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studymode167 - Trung tâm chỉ huy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="brand">
+            <h2>StudyMode<span style="color:var(--primary-color)">167</span></h2>
+        </div>
+        
+        <div class="user-profile">
+            <div class="avatar-circle">P</div>
+            <div class="user-stats">
+                <p id="user-name">Phan (Học sinh)</p>
+                <p class="xp-text">LV.<span id="level-display">1</span> - <span id="xp-display">0</span> XP</p>
+                <div class="xp-bar-bg"><div id="xp-bar-fill" class="xp-bar-fill"></div></div>
+            </div>
+        </div>
+
+        <ul class="menu">
+            <li onclick="switchTab('tab-dashboard')" class="active"><i class="fas fa-home"></i> Tổng quan</li>
+            <li onclick="switchTab('tab-schedule')"><i class="fas fa-calendar-alt"></i> Lịch & Tài liệu (LMS)</li>
+            <li onclick="switchTab('tab-todo')"><i class="fas fa-check-square"></i> Nhiệm vụ (To-do)</li>
+            <li onclick="switchTab('tab-flashcard')"><i class="fas fa-clone"></i> Flashcards</li>
+            <li onclick="switchTab('tab-notes')"><i class="fas fa-sticky-note"></i> Ghi chú nhanh</li>
+        </ul>
+
+        <div class="settings">
+            <button onclick="toggleTheme()" id="theme-btn"><i class="fas fa-moon"></i> Chế độ tối</button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        
+        <header>
+            <h1 id="page-title">Tổng quan</h1>
+            <div class="streak-badge">
+                <i class="fas fa-fire"></i> Chuỗi: <span id="streak-display">0</span> ngày
+            </div>
+        </header>
+
+        <section id="tab-dashboard" class="tab-section active">
+            <div class="pomodoro-container">
+                <div class="circle-wrap">
+                    <svg class="progress-ring" width="260" height="260">
+                        <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.1)" stroke-width="10" fill="transparent" r="110" cx="130" cy="130"/>
+                        <circle class="progress-ring__circle" id="progress-circle" stroke="var(--primary-color)" stroke-width="10" fill="transparent" r="110" cx="130" cy="130"/>
+                    </svg>
+                    <div class="timer-text">
+                        <h2 id="time-display">25:00</h2>
+                        <p id="timer-status">Sẵn sàng</p>
+                    </div>
+                </div>
+                
+                <div class="pomo-controls">
+                    <button onclick="setMode(25)" class="btn-outline">25 Phút</button>
+                    <button onclick="setMode(50)" class="btn-outline">50 Phút</button>
+                    <button onclick="setMode(5)" class="btn-outline">Nghỉ 5p</button>
+                </div>
+                
+                <div class="main-actions">
+                    <button id="start-btn" onclick="toggleTimer()" class="btn-primary">BẮT ĐẦU HỌC</button>
+                    <button onclick="resetTimer()" class="btn-secondary">Reset</button>
+                    <button onclick="toggleFullScreen()" class="btn-icon" title="Toàn màn hình"><i class="fas fa-expand"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-schedule" class="tab-section">
+            <div class="card">
+                <h3>📅 Thời khóa biểu</h3>
+                <div class="input-group">
+                    <input type="text" id="sch-subject" placeholder="Môn học (VD: Toán)">
+                    <input type="text" id="sch-time" placeholder="Thời gian (VD: 8h-10h)">
+                    <button onclick="addSchedule()" class="btn-primary">Thêm</button>
+                </div>
+                <ul id="schedule-list" class="list-group"></ul>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3>📂 Kho tài liệu (Demo)</h3>
+                <div class="upload-area">
+                    <input type="file" id="file-upload">
+                    <p>Chọn file PDF, Docx để lưu trữ...</p>
+                </div>
+                <ul id="doc-list" class="list-group">
+                    <li><i class="fas fa-file-pdf"></i> De_thi_IELTS_Reading.pdf <span class="tag">Tiếng Anh</span></li>
+                    <li><i class="fas fa-file-word"></i> Bai_van_lop_7.docx <span class="tag">Văn</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="tab-todo" class="tab-section">
+            <div class="card">
+                <h3>📝 Danh sách nhiệm vụ</h3>
+                <div class="input-group">
+                    <input type="text" id="todo-input" placeholder="Nhập bài tập cần làm...">
+                    <button onclick="addTodo()" class="btn-primary">Thêm</button>
+                </div>
+                <ul id="todo-list" class="todo-list-style">
+                    </ul>
+            </div>
+        </section>
+
+        <section id="tab-flashcard" class="tab-section">
+            <div class="flashcard-area">
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <h3 id="fc-front">Bấm "Tạo mới" để bắt đầu</h3>
+                            <p>Nhấn vào thẻ để lật</p>
+                        </div>
+                        <div class="flashcard-back">
+                            <h3 id="fc-back">Đáp án ở đây</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="fc-controls">
+                    <button onclick="prevCard()" class="btn-secondary">< Trước</button>
+                    <button onclick="nextCard()" class="btn-secondary">Sau ></button>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top:20px">
+                <h4>Tạo thẻ mới (Học từ vựng)</h4>
+                <input type="text" id="new-fc-front" placeholder="Mặt trước (Từ vựng)">
+                <input type="text" id="new-fc-back" placeholder="Mặt sau (Nghĩa)">
+                <button onclick="addFlashcard()" class="btn-primary" style="margin-top:10px">Lưu thẻ</button>
+            </div>
+        </section>
+
+        <section id="tab-notes" class="tab-section">
+            <div class="card" style="height: 80vh; display:flex; flex-direction:column;">
+                <h3>📒 Ghi chú nhanh</h3>
+                <textarea id="quick-note" placeholder="Viết ý tưởng của bạn vào đây... (Tự động lưu)"></textarea>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
