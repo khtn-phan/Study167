@@ -3,28 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studymode167 - Tập trung</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>Studymode167 - Focus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="app-container">
-        
-        <section class="left-panel">
-            <div class="header-name">
-                <input type="text" id="user-name" placeholder="Nhập tên của bạn..." autocomplete="off">
-            </div>
+    <div class="container">
+        <div class="left-panel">
+            
+            <input type="text" id="username" placeholder="Nhập tên bạn..." autocomplete="off">
 
-            <div class="timer-wrapper">
-                <svg class="progress-sq" width="320" height="320">
-                    <rect x="10" y="10" width="300" height="300" rx="50" ry="50" class="sq-bg"/>
-                    <rect x="10" y="10" width="300" height="300" rx="50" ry="50" class="sq-progress" id="progress-rect"/>
+            <div class="timer-box">
+                <svg class="timer-svg" width="300" height="300">
+                    <rect x="5" y="5" width="290" height="290" rx="40" ry="40" class="stroke-bg"></rect>
+                    <rect x="5" y="5" width="290" height="290" rx="40" ry="40" class="stroke-run" id="progress-bar"></rect>
                 </svg>
                 
-                <div class="timer-display">
-                    <h1 id="time-text">25:00</h1>
-                    <p id="status-text">Sẵn sàng</p>
+                <div class="timer-text">
+                    <h1 id="time-display">25:00</h1>
+                    <p id="status-display">Sẵn sàng</p>
                 </div>
             </div>
 
@@ -32,42 +30,42 @@
                 <div class="presets">
                     <button onclick="setMode(25)">25 Phút</button>
                     <button onclick="setMode(50)">50 Phút</button>
-                    <button onclick="setMode(5)" class="break-btn">Nghỉ 5p</button>
-                    <button onclick="setMode(10)" class="break-btn">Nghỉ 10p</button>
-                </div>
-                
-                <div class="custom-input">
-                    <input type="number" id="custom-min" placeholder="Phút tùy chỉnh">
-                    <button onclick="setCustom()">Set</button>
+                    <button onclick="setMode(5)" class="btn-break">Nghỉ 5p</button>
+                    <button onclick="setMode(10)" class="btn-break">Nghỉ 10p</button>
                 </div>
 
-                <div class="main-btns">
-                    <button id="start-btn" onclick="toggleTimer()">BẮT ĐẦU</button>
-                    <button id="reset-btn" onclick="resetTimer()">Reset</button>
+                <div class="custom-set">
+                    <input type="number" id="custom-min" placeholder="Phút" min="1">
+                    <button onclick="setCustom()">Đặt</button>
                 </div>
-                
+
+                <div class="main-actions">
+                    <button id="btn-start" onclick="toggleTimer()">BẮT ĐẦU</button>
+                    <button id="btn-reset" onclick="resetTimer()">RESET</button>
+                </div>
+
                 <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶ Toàn màn hình</button>
             </div>
-        </section>
+        </div>
 
-        <section class="right-panel">
+        <div class="right-panel">
             
-            <div class="box task-box">
-                <h3>📋 Nhiệm vụ hôm nay</h3>
-                <div class="task-input-group">
+            <div class="panel-box task-section">
+                <h3>📌 Nhiệm vụ hôm nay</h3>
+                <div class="add-task">
                     <input type="text" id="task-input" placeholder="Nhập bài tập...">
-                    <button onclick="addTask()">+</button>
+                    <button onclick="addTask()">Thêm</button>
                 </div>
                 <ul id="task-list">
                     </ul>
             </div>
 
-            <div class="box note-box">
-                <h3>📒 Ghi chú nhanh</h3>
-                <textarea id="note-area" placeholder="Viết ý tưởng, công thức cần nhớ... (Tự động lưu)"></textarea>
+            <div class="panel-box note-section">
+                <h3>📝 Ghi chú nhanh</h3>
+                <textarea id="note-area" placeholder="Viết ý tưởng vào đây... (Tự động lưu)"></textarea>
             </div>
 
-        </section>
+        </div>
     </div>
 
     <script src="script.js"></script>
