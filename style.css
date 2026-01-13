@@ -1,126 +1,129 @@
 :root {
-    --bg-color: #1a1a2e;       /* Nền tím than đậm */
-    --panel-bg: #16213e;       /* Nền các khối */
-    --text-color: #eaeaea;
-    --primary-color: #0f3460;
-    --accent-color: #e94560;   /* Màu đỏ điểm nhấn */
-    --highlight: #00d4ff;      /* Màu xanh neon cho đồng hồ */
+    --bg-dark: #121212;
+    --panel-dark: #1e1e1e;
+    --text-light: #e0e0e0;
+    --accent: #00d4ff; /* Xanh neon */
+    --accent-break: #00ff88; /* Xanh lá nghỉ */
+    --danger: #ff4d4d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--bg-dark);
+    color: var(--text-light);
     height: 100vh;
-    overflow: hidden; /* Chống thanh cuộn */
+    overflow: hidden; /* Chặn cuộn trang */
 }
 
-/* BỐ CỤC CHIA ĐÔI (CSS GRID) */
-.app-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Trái 50% - Phải 50% */
+/* Bố cục chia đôi */
+.container {
+    display: flex;
     height: 100%;
+    width: 100%;
 }
 
-/* --- CỘT TRÁI (ĐỒNG HỒ) --- */
+/* --- TRÁI: POMODORO --- */
 .left-panel {
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-right: 2px solid rgba(255,255,255,0.05);
+    border-right: 1px solid #333;
     padding: 20px;
     gap: 20px;
 }
 
-/* Input tên người dùng */
-#user-name {
+#username {
     background: transparent; border: none; border-bottom: 2px solid #333;
-    color: var(--highlight); font-size: 1.5rem; text-align: center;
-    outline: none; width: 300px; margin-bottom: 20px;
+    color: var(--accent); font-size: 1.5rem; text-align: center;
+    outline: none; width: 60%; padding: 5px;
 }
 
-/* Đồng hồ hình vuông */
-.timer-wrapper { position: relative; width: 320px; height: 320px; }
+/* Đồng hồ SVG */
+.timer-box { position: relative; width: 300px; height: 300px; }
 
-.progress-sq { transform: rotate(-90deg); } /* Xoay để bắt đầu từ góc trên */
-.sq-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 10; }
-
-.sq-progress {
+.timer-svg { transform: rotate(-90deg); } /* Xoay để bắt đầu chạy từ đỉnh */
+.stroke-bg { fill: none; stroke: #333; stroke-width: 8; }
+.stroke-run {
     fill: none;
-    stroke: var(--highlight); /* Màu viền */
-    stroke-width: 10;
+    stroke: var(--accent);
+    stroke-width: 8;
     stroke-linecap: round;
-    /* Hiệu ứng chạy sẽ được JS xử lý */
-    stroke-dasharray: 1200; /* Chu vi ước tính */
+    stroke-dasharray: 1100; /* Giá trị tạm, JS sẽ tính lại chính xác */
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 1s linear, stroke 0.3s;
 }
 
-.timer-display {
+.timer-text {
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%); text-align: center;
 }
-#time-text { font-size: 4rem; font-weight: bold; }
-#status-text { font-size: 1rem; opacity: 0.7; }
+#time-display { font-size: 4rem; font-weight: 800; line-height: 1; }
+#status-display { margin-top: 10px; opacity: 0.7; font-size: 1.1rem; }
 
 /* Nút bấm */
-.controls { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; }
-.presets, .main-btns, .custom-input { display: flex; gap: 10px; justify-content: center; }
+.controls { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 10px; }
+.presets, .custom-set, .main-actions { display: flex; gap: 8px; justify-content: center; }
 
 button {
-    padding: 10px 15px; border-radius: 8px; border: none; cursor: pointer;
-    font-weight: bold; background: #333; color: #fff; transition: 0.2s;
+    padding: 10px; border: none; border-radius: 8px;
+    background: #2c2c2c; color: #fff; cursor: pointer; font-weight: 600;
+    transition: 0.2s; flex: 1;
 }
 button:hover { background: #444; }
-.break-btn { color: #90ee90; }
-#start-btn { background: var(--highlight); color: #000; flex: 2; font-size: 1.1rem; }
-#reset-btn { background: var(--accent-color); flex: 1; }
+.btn-break { color: var(--accent-break); }
 
-.custom-input input {
-    padding: 10px; border-radius: 8px; border: 1px solid #444; 
-    background: transparent; color: #fff; width: 60%; text-align: center;
+.custom-set input {
+    background: #2c2c2c; border: none; color: #fff; padding: 10px;
+    border-radius: 8px; width: 80px; text-align: center;
 }
 
-/* --- CỘT PHẢI (NHIỆM VỤ & GHI CHÚ) --- */
+#btn-start { background: var(--accent); color: #000; flex: 2; font-size: 1.1rem; }
+#btn-reset { background: var(--danger); flex: 1; }
+.fullscreen-btn { background: transparent; border: 1px solid #444; color: #888; margin-top: 10px; }
+
+/* --- PHẢI: TASKS & NOTES --- */
 .right-panel {
+    width: 50%;
     display: flex;
     flex-direction: column;
     padding: 20px;
     gap: 20px;
+    background: #181818;
 }
 
-.box {
-    background: var(--panel-bg);
-    border-radius: 20px;
-    padding: 20px;
+.panel-box {
+    background: var(--panel-dark);
+    border-radius: 15px; padding: 20px;
     display: flex; flex-direction: column;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.task-box { flex: 1; /* Chiếm 50% chiều cao phải */ overflow-y: auto; }
-.note-box { flex: 1; /* Chiếm 50% chiều cao phải */ }
+.task-section { flex: 1; overflow-y: auto; } /* Chiếm 50% phải */
+.note-section { flex: 1; } /* Chiếm 50% phải */
 
-h3 { margin-bottom: 15px; color: var(--accent-color); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+h3 { margin-bottom: 15px; color: var(--accent); border-bottom: 1px solid #333; padding-bottom: 10px; }
 
-/* Task List Style */
-.task-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
-#task-input { flex: 1; padding: 10px; border-radius: 8px; border: none; background: #222; color: #fff; }
+/* Task list styles */
+.add-task { display: flex; gap: 10px; margin-bottom: 15px; }
+#task-input { flex: 1; padding: 10px; background: #121212; border: 1px solid #333; color: #fff; border-radius: 6px; }
+
 #task-list { list-style: none; }
 #task-list li {
-    background: rgba(255,255,255,0.05); padding: 10px; margin-bottom: 8px;
-    border-radius: 8px; display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer;
+    background: #252525; margin-bottom: 8px; padding: 10px; border-radius: 6px;
+    display: flex; justify-content: space-between; align-items: center; cursor: pointer;
 }
-#task-list li.done { text-decoration: line-through; opacity: 0.5; background: rgba(0,255,0,0.1); }
-.del-btn { background: transparent; color: #ff4d4d; font-size: 1.2rem; padding: 0 5px; }
+#task-list li.done span { text-decoration: line-through; opacity: 0.5; }
+.del-btn { background: transparent; color: #ff4d4d; width: auto; flex: none; padding: 5px 10px; }
 
-/* Note Area Style */
+/* Note styles */
 #note-area {
     width: 100%; height: 100%; background: transparent; border: none;
-    color: #ddd; font-size: 1rem; line-height: 1.5; resize: none; outline: none;
+    color: #ccc; font-size: 1rem; line-height: 1.5; resize: none; outline: none;
 }
 
 /* Chế độ toàn màn hình */
-body.fullscreen .app-container { padding: 0; }
+body.fullscreen .container { padding: 0; }
+body.fullscreen .left-panel, body.fullscreen .right-panel { border: none; }
